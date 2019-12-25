@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-
   <ItemGroup>
+    <ProjectReference Include="..\Bobkov.DAL\Bobkov.DAL.csproj" />
   </ItemGroup>
 
 </Project>
