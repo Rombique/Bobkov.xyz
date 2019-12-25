@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Bobkov.DAL;
+using Bobkov.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Bobkov.Web.Models;
+using System.Diagnostics;
 
 namespace Bobkov.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UnitOfWork uow;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UnitOfWork uow)
         {
             _logger = logger;
+            this.uow = uow;
         }
 
         public IActionResult Index()
