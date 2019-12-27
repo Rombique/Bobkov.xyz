@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Bobkov.DAL.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : Base
     {
         internal MainContext context;
         internal DbSet<TEntity> dbSet;

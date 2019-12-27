@@ -18,7 +18,7 @@ namespace Bobkov.DAL
         }
 
         public IBaseRepository<TEntity> Repository<TEntity>()
-            where TEntity : BaseEntity
+            where TEntity : Base
         {
             var entityType = typeof(TEntity);
             if (repositories.ContainsKey(entityType))
