@@ -8,6 +8,7 @@ namespace Bobkov.DAL.Contexts
     {
         public IdentityContext(DbContextOptions options) : base(options)
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
     }

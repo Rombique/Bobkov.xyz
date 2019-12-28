@@ -6,15 +6,10 @@ using System.Diagnostics;
 
 namespace Bobkov.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly UnitOfWork uow;
-
-        public HomeController(ILogger<HomeController> logger, UnitOfWork uow)
+        public HomeController(ILogger<HomeController> logger, UnitOfWork uow) : base(logger, uow)
         {
-            _logger = logger;
-            this.uow = uow;
         }
 
         public IActionResult Index()

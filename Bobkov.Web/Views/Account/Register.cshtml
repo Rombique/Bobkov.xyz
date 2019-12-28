@@ -1,0 +1,28 @@
+﻿@model Bobkov.Web.Models.Account.RegisterVM
+<h2>Регистрация</h2>
+<form method="post" asp-controller="Account" asp-action="Register" asp-anti-forgery="true">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        @Html.LabelFor(m => m.Username)
+        @Html.EditorFor(m => m.Username)
+        @Html.ValidationMessageFor(model => model.Username, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Email)
+        @Html.EditorFor(m => m.Email)
+        @Html.ValidationMessageFor(model => model.Email, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Password)
+        @Html.EditorFor(m => m.Password)
+        @Html.ValidationMessageFor(model => model.Password, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.ConfirmPassword)
+        @Html.EditorFor(m => m.ConfirmPassword)
+        @Html.ValidationMessageFor(model => model.ConfirmPassword, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div style="margin-top: 20px;">
+        <input type="submit" value="Регистрация" class="btn"/>
+    </div>
+</form>

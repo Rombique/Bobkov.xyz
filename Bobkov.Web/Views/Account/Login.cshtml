@@ -1,0 +1,24 @@
+﻿@model Bobkov.Web.Models.Account.LoginVM
+
+<h2>Вход</h2>
+<form method="post" asp-controller="Account" asp-action="Login">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div>
+        @Html.LabelFor(m => m.Username)
+        @Html.EditorFor(m => m.Username)
+        @Html.ValidationMessageFor(model => model.Username, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Password)
+        @Html.EditorFor(m => m.Password)
+        @Html.ValidationMessageFor(model => model.Password, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.RememberPassword)
+        @Html.EditorFor(m => m.RememberPassword)
+        @Html.ValidationMessageFor(model => model.RememberPassword, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        <input type="submit" value="Войти" />
+    </div>
+</form>
