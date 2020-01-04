@@ -1,2 +1,4 @@
 language: csharp
 solution: Bobkov.xyz.sln
+mono: none
+dotnet: 3.0.0
