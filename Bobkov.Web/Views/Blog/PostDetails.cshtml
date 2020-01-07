@@ -1,0 +1,9 @@
+﻿@model Bobkov.Web.Models.Blog.PostDetailsVM
+
+<div class="publish-date">
+    <p>Опубликовано: @Html.DisplayFor(m => m.DateCreated)</p>
+</div>
+<h2> @Html.DisplayFor(m => m.Title)</h2>
+<div> @Html.Raw(Model.Content)</div>
+<div> @Html.DisplayFor(m => m.Author)</div>
+<div> @Html.DisplayFor(m => m.Category)</div>

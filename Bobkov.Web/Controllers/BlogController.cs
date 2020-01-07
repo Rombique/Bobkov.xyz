@@ -15,9 +15,11 @@ namespace Bobkov.Web.Controllers
     public class BlogController : BaseController
     {
         private readonly IBlogService blogService;
-        public BlogController(ILogger<BaseController> logger, IBlogService blogService) : base(logger)
+        private readonly IUserService userService;
+        public BlogController(ILogger<BaseController> logger, IBlogService blogService, IUserService userService) : base(logger)
         {
             this.blogService = blogService;
+            this.userService = userService;
         }
 
         [HttpPost]
@@ -82,6 +84,24 @@ namespace Bobkov.Web.Controllers
                 .ToList();
             NewPostVM newPost = new NewPostVM() { Categories = categoriesModels };
             return View(newPost);
+        }
+
+        public async Task<ActionResult> PostDetails(int id)
+        {
+            PostDTO post = blogService.GetPostById(id);
+            var author = await userService.GetUserById(post.AuthorId);
+            var category = blogService.GetCategoryById(post.CategoryId);
+            PostDetailsVM postDetails = new PostDetailsVM()
+            {
+                Author = author?.UserName,
+                Category = category?.Name,
+                Content = post.Content,
+                DateCreated = post.DateCreated,
+                DateUpdated = post.DateUpdated,
+                Preview = post.Preview,
+                Title = post.Title
+            };
+            return View(postDetails);
         }
     }
 }

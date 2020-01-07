@@ -10,5 +10,7 @@ namespace Bobkov.BL.Interfaces
         OperationDetails AddNewCategory(string categoryName);
         OperationDetails AddNewPost(PostDTO post);
         IEnumerable<CategoryDTO> GetCategories();
+        PostDTO GetPostById(int id);
+        CategoryDTO GetCategoryById(int id);
     }
 }

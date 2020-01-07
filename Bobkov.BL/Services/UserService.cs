@@ -47,5 +47,19 @@ namespace Bobkov.BL.Services
         {
             UnitOfWork.Dispose();
         }
+
+        public async Task<UserDTO> GetUserById(int id)
+        {
+            User user = await UnitOfWork.UserManager.FindByIdAsync(id.ToString());
+            if (user == null)
+                return null;
+
+            return new UserDTO()
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Id = user.Id
+            };
+        }
     }
 }

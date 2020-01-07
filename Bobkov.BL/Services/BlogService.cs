@@ -6,7 +6,6 @@ using Bobkov.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bobkov.BL.Services
 {
@@ -77,6 +76,33 @@ namespace Bobkov.BL.Services
         {
             var allCategories = UnitOfWork.Repository<Category>().GetAll(true);
             return allCategories.Select(c => new CategoryDTO() { Id = c.Id, Name = c.Name });
+        }
+
+        public PostDTO GetPostById(int id)
+        {
+            var post = UnitOfWork.Repository<Post>().GetFirst(p => p.Id == id, null, true);
+            if (post == null)
+                return null;
+
+            return new PostDTO() //TODO: либо автомеппер либо напиши собственные мепперы
+            {
+                AuthorId = post.AuthorId,
+                CategoryId = post.CategoryId,
+                Id = post.Id,
+                Content = post.Content,
+                DateCreated = post.DateCreated,
+                DateUpdated = post.DateUpdated,
+                Preview = post.Preview,
+                Title = post.Title
+            };
+        }
+
+        public CategoryDTO GetCategoryById(int id)
+        {
+            var category = UnitOfWork.Repository<Category>().GetFirst(c => c.Id == id);
+            if (category == null)
+                return null;
+            return new CategoryDTO() { Id = category.Id, Name = category.Name };
         }
     }
 }
