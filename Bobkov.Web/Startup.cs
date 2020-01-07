@@ -1,11 +1,14 @@
+using Bobkov.BL.Interfaces;
+using Bobkov.BL.Services;
 using Bobkov.DAL;
 using Bobkov.DAL.Contexts;
 using Bobkov.DAL.Entities;
+using Bobkov.DAL.Identity;
+using Bobkov.DAL.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,18 +33,21 @@ namespace Bobkov.Web
             services.AddDbContext<MainContext>(options => options.UseNpgsql(mainConnection));
             services.AddDbContext<IdentityContext>(options => options.UseNpgsql(identityConnection));
 
-            services.AddScoped<UnitOfWork>();
-
             services.AddIdentity<User, Role>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
-                options.Lockout.MaxFailedAccessAttempts = 3;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-            })
+                {
+                    options.User.RequireUniqueEmail = true;
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<IdentityContext>()
-                .AddDefaultTokenProviders();
+                .AddUserManager<AppUserManager>()
+                .AddRoleManager<AppRoleManager>();
 
+            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => options.LoginPath = new PathString("/Auth/Login")); // TODO:

@@ -11,5 +11,7 @@ namespace Bobkov.DAL.Contexts
             //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
+
+        public DbSet<UserProfile> UserProfiles { get; set; }
     }
 }

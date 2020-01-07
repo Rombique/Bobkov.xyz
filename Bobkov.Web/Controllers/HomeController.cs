@@ -1,4 +1,4 @@
-﻿using Bobkov.DAL;
+﻿using Bobkov.DAL.Interfaces;
 using Bobkov.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,7 +8,7 @@ namespace Bobkov.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ILogger<HomeController> logger, UnitOfWork uow) : base(logger, uow)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork uow) : base(logger, uow)
         {
         }
 

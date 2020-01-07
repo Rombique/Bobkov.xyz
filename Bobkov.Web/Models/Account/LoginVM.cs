@@ -13,7 +13,7 @@ namespace Bobkov.Web.Models.Account
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Запомнить пароль?")]
-        public bool RememberPassword { get; set; }
+        [Display(Name = "Запомнить меня")]
+        public bool IsPersistent { get; set; }
     }
 }

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bobkov.DAL\Bobkov.DAL.csproj" />
+    <ProjectReference Include="..\Bobkov.BL\Bobkov.BL.csproj" />
   </ItemGroup>
 
 </Project>

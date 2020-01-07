@@ -18,6 +18,5 @@ namespace Bobkov.DAL.Interfaces
             params Expression<Func<TEntity, object>>[] includes);
         void Delete(TEntity entity);
         void Delete(Expression<Func<TEntity, bool>> predicate);
-
     }
 }

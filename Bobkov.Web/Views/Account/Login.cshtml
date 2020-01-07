@@ -14,9 +14,9 @@
         @Html.ValidationMessageFor(model => model.Password, string.Empty, new { @class = "text-danger" })
     </div>
     <div>
-        @Html.LabelFor(m => m.RememberPassword)
-        @Html.EditorFor(m => m.RememberPassword)
-        @Html.ValidationMessageFor(model => model.RememberPassword, string.Empty, new { @class = "text-danger" })
+        @Html.LabelFor(m => m.IsPersistent)
+        @Html.EditorFor(m => m.IsPersistent)
+        @Html.ValidationMessageFor(model => model.IsPersistent, string.Empty, new { @class = "text-danger" })
     </div>
     <div>
         <input type="submit" value="Войти" />

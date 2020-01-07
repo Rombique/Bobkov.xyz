@@ -1,22 +1,21 @@
-﻿using Bobkov.DAL.Entities;
+﻿using Bobkov.BL.DTO;
+using Bobkov.BL.Interfaces;
 using Bobkov.Web.Models.Account;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Bobkov.Web.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly IUserService userService;
+        private readonly ILoginService loginService;
 
-        public AccountController(ILogger<AccountController> logger, UserManager<User> userManager, SignInManager<User> signInManager) : base(logger)
+        public AccountController(ILogger<AccountController> logger, IUserService userService, ILoginService loginService) : base(logger)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.loginService = loginService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -29,19 +28,16 @@ namespace Bobkov.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Username, LastActivity = DateTime.Now };
-                var result = await userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                UserDTO user = new UserDTO { Email = model.Email, UserName = model.Username, Password = model.Password };
+                var result = await userService.Create(user);
+                if (result.Succeedeed)
                 {
-                    await signInManager.SignInAsync(user, false);
+                    await loginService.Login(user);
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    ModelState.AddModelError(string.Empty, result.Message);
                 }
             }
             return View(model);
@@ -60,7 +56,7 @@ namespace Bobkov.Web.Controllers
             if (ModelState.IsValid)
             {
                 var result =
-                    await signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberPassword, false);
+                    await loginService.Login(new UserDTO() { UserName = model.Username, Password = model.Password, IsPersistent = model.IsPersistent });
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
@@ -76,7 +72,7 @@ namespace Bobkov.Web.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await loginService.Logout();
             return RedirectToAction("Index", "Home");
         }
     }

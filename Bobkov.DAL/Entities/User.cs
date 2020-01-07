@@ -5,6 +5,6 @@ namespace Bobkov.DAL.Entities
 {
     public class User : IdentityUser<int>
     {
-        public DateTime LastActivity { get; set; } 
+        public virtual UserProfile ClientProfile { get; set; }
     }
 }

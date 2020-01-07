@@ -9,10 +9,12 @@ namespace Bobkov.DAL
         public static async Task InitAsync(RoleManager<Role> roleManager, UserManager<User> userManager)
         {
             var adminRole = await roleManager.FindByNameAsync("Admin");
+            var userRole = await roleManager.FindByNameAsync("User");
             if (adminRole == null)
-            {
                 await roleManager.CreateAsync(new Role { Name = "Admin" });
-            }
+            if (userRole == null)
+                await roleManager.CreateAsync(new Role { Name = "User" });
+
             if (await userManager.FindByNameAsync("Rombique") == null)
             {
                 User admin = new User { Email = "roman@bobkov.xyz", UserName = "Rombique" };
