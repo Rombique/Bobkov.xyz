@@ -10,7 +10,7 @@ namespace Bobkov.BL.DTO
         public string Content { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
-        public string Category { get; set; }
-        public string Author { get; set; }
+        public int CategoryId { get; set; }
+        public int AuthorId { get; set; }
     }
 }

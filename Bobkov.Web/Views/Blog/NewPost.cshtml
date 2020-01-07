@@ -1,0 +1,39 @@
+﻿@model Bobkov.Web.Models.Blog.NewPostVM
+
+<script src="http://cdn.tinymce.com/4/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#Preview'
+    });
+    tinymce.init({
+        selector: '#Content'
+    });
+</script>
+
+<h2>Добавление нового поста</h2>
+<form method="post" asp-controller="Blog" asp-action="NewPost">
+    <div asp-validation-summary="All"></div>
+    <div>
+        @Html.LabelFor(m => m.Title)
+        @Html.EditorFor(m => m.Title)
+        @Html.ValidationMessageFor(model => model.Title, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Preview)
+        @Html.TextAreaFor(m => m.Preview, new { @class = "form-control editorHtml" })
+        @Html.ValidationMessageFor(model => model.Preview, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Content)
+        @Html.TextAreaFor(m => m.Content, new { @class = "form-control editorHtml" })
+        @Html.ValidationMessageFor(model => model.Content, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.SelectedCategoryId)
+        @Html.DropDownListFor(m => m.SelectedCategoryId, new SelectList(Model.Categories, "Id", "Name"))
+        @Html.ValidationMessageFor(model => model.SelectedCategoryId, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        <input type="submit" value="Добавить" />
+    </div>
+</form>

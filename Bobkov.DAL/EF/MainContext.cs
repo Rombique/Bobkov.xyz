@@ -1,9 +1,10 @@
 ﻿using Bobkov.DAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bobkov.DAL.Contexts
+namespace Bobkov.DAL.EF
 {
-    public class MainContext : DbContext
+    public class MainContext : IdentityDbContext<User, Role, int>
     {
         public MainContext(DbContextOptions<MainContext> options)
             : base(options)
@@ -13,5 +14,6 @@ namespace Bobkov.DAL.Contexts
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
     }
 }

@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bobkov.DAL.Entities
 {
-    public class UserProfile
+    public class UserProfile : Base
     {
         [Key]
         [ForeignKey("User")]
-        public int Id { get; set; }
+        public new int Id { get; set; }
         public virtual User User { get; set; }
         public DateTime LastActivity { get; set; }
     }

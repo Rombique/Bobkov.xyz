@@ -1,7 +1,7 @@
 using Bobkov.BL.Interfaces;
 using Bobkov.BL.Services;
 using Bobkov.DAL;
-using Bobkov.DAL.Contexts;
+using Bobkov.DAL.EF;
 using Bobkov.DAL.Entities;
 using Bobkov.DAL.Identity;
 using Bobkov.DAL.Interfaces;
@@ -31,7 +31,6 @@ namespace Bobkov.Web
             string identityConnection = Configuration.GetConnectionString("IdentityConnection");
 
             services.AddDbContext<MainContext>(options => options.UseNpgsql(mainConnection));
-            services.AddDbContext<IdentityContext>(options => options.UseNpgsql(identityConnection));
 
             services.AddIdentity<User, Role>(options =>
                 {
@@ -40,7 +39,7 @@ namespace Bobkov.Web
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                 })
-                .AddEntityFrameworkStores<IdentityContext>()
+                .AddEntityFrameworkStores<MainContext>()
                 .AddUserManager<AppUserManager>()
                 .AddRoleManager<AppRoleManager>();
 
@@ -52,7 +51,7 @@ namespace Bobkov.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => options.LoginPath = new PathString("/Auth/Login")); // TODO:
 
-            new IdentityDbInitializer();
+            new DbInitializer();
             services.AddControllersWithViews();
         }
 

@@ -4,6 +4,8 @@ using Bobkov.BL.Interfaces;
 using Bobkov.DAL.Entities;
 using Bobkov.DAL.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bobkov.BL.Services
@@ -17,9 +19,35 @@ namespace Bobkov.BL.Services
             UnitOfWork = uow;
         }
 
-        public Task<OperationDetails> AddNewPost(PostDTO post)
+        public OperationDetails AddNewPost(PostDTO post)
         {
-            throw new NotImplementedException();
+            var newPost = UnitOfWork.Repository<Post>().GetFirst(p => p.Title == post.Title, null, true);
+            if (newPost == null)
+            {
+                newPost = new Post()
+                {
+                    AuthorId = post.AuthorId,
+                    CategoryId = post.CategoryId,
+                    Content = post.Content,
+                    DateCreated = DateTime.Now,
+                    Preview = post.Preview,
+                    Title = post.Title
+                };
+                try
+                {
+                    UnitOfWork.Repository<Post>().AddNew(newPost);
+                    UnitOfWork.Commit();
+                    return new OperationDetails(true, $"Пост успешно добавлен!", "BlogService.AddNewPost");
+                }
+                catch (Exception ex)
+                {
+                    return new OperationDetails(false, ex.Message, "BlogService.AddNewPost");
+                }
+            }
+            else
+            {
+                return new OperationDetails(false, $"Пост с заголовком \"{post.Title}\" уже существует!", "BlogService.AddNewPost");
+            }
         }
 
         public OperationDetails AddNewCategory(string categoryName)
@@ -43,6 +71,12 @@ namespace Bobkov.BL.Services
             {
                 return new OperationDetails(false, $"Категория \"{categoryName}\" уже существует!", "BlogService.CreateNewCategory");
             }
+        }
+
+        public IEnumerable<CategoryDTO> GetCategories()
+        {
+            var allCategories = UnitOfWork.Repository<Category>().GetAll(true);
+            return allCategories.Select(c => new CategoryDTO() { Id = c.Id, Name = c.Name });
         }
     }
 }

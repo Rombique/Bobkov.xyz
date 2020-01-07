@@ -1,5 +1,6 @@
 ﻿using Bobkov.BL.DTO;
 using Bobkov.BL.Infrastructure;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bobkov.BL.Interfaces
@@ -7,6 +8,7 @@ namespace Bobkov.BL.Interfaces
     public interface IBlogService
     {
         OperationDetails AddNewCategory(string categoryName);
-        Task<OperationDetails> AddNewPost(PostDTO post);
+        OperationDetails AddNewPost(PostDTO post);
+        IEnumerable<CategoryDTO> GetCategories();
     }
 }

@@ -1,4 +1,4 @@
-﻿using Bobkov.DAL.Contexts;
+﻿using Bobkov.DAL.EF;
 using Bobkov.DAL.Entities;
 using Bobkov.DAL.Identity;
 using Bobkov.DAL.Interfaces;
@@ -12,19 +12,15 @@ namespace Bobkov.DAL
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly MainContext mainContext;
-        private readonly IdentityContext identityContext;
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
         public AppUserManager UserManager { get; }
         public AppRoleManager RoleManager { get; }
-        public IProfileManager ProfileManager { get; }
 
-        public UnitOfWork(IdentityContext identity, MainContext context, AppUserManager userManager, AppRoleManager roleManager)
+        public UnitOfWork(MainContext context, AppUserManager userManager, AppRoleManager roleManager)
         {
             mainContext = context;
-            identityContext = identity;
             this.RoleManager = roleManager;
             this.UserManager = userManager;
-            ProfileManager = new ProfileManager(identity);
         }
 
         public IBaseRepository<TEntity> Repository<TEntity>()
@@ -44,19 +40,9 @@ namespace Bobkov.DAL
             mainContext.SaveChanges();
         }
 
-        public void IdentityCommit()
-        {
-            identityContext.SaveChanges();
-        }
-
         public Task CommitAsync()
         {
             return mainContext.SaveChangesAsync();
-        }
-
-        public Task IdentityCommitAsync()
-        {
-            return identityContext.SaveChangesAsync();
         }
 
         private bool disposed = false;
@@ -68,8 +54,6 @@ namespace Bobkov.DAL
                 if (disposing)
                 {
                     mainContext.Dispose();
-                    identityContext.Dispose();
-                    ProfileManager.Dispose();
                     UserManager.Dispose();
                     RoleManager.Dispose();
                 }

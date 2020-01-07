@@ -33,8 +33,8 @@ namespace Bobkov.BL.Services
                 await UnitOfWork.UserManager.AddToRoleAsync(user, userDto.Role ?? "User");
 
                 UserProfile userProfile = new UserProfile { Id = user.Id, LastActivity = DateTime.Now };
-                UnitOfWork.ProfileManager.Create(userProfile);
-                await UnitOfWork.IdentityCommitAsync();
+                UnitOfWork.Repository<UserProfile>().AddNew(userProfile);
+                await UnitOfWork.CommitAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена!", "");
             }
             else

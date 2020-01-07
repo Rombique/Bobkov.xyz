@@ -1,4 +1,5 @@
 using Bobkov.DAL;
+using Bobkov.DAL.EF;
 using Bobkov.DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,9 @@ namespace Bobkov.Web
                 {
                     var roleManager = services.GetRequiredService<RoleManager<Role>>();
                     var userManager = services.GetRequiredService<UserManager<User>>();
-                    await IdentityDbInitializer.InitAsync(roleManager, userManager);
+                    var context = services.GetRequiredService<MainContext>();
+                    await DbInitializer.InitIdentityAsync(roleManager, userManager);
+                    DbInitializer.InitMain(context);
                 }
                 catch (Exception ex)
                 {
