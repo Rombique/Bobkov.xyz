@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Bobkov.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace Bobkov.DAL.Interfaces
 {
-    public interface IBaseRepository<TEntity> where TEntity : IBaseEntity
+    public interface IBaseRepository<TEntity> where TEntity : Base
     {
         void AddNew(TEntity entity); 
         TEntity GetById(int id, bool asNoTracking = false);

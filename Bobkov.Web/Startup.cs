@@ -44,10 +44,10 @@ namespace Bobkov.Web
                 .AddUserManager<AppUserManager>()
                 .AddRoleManager<AppRoleManager>();
 
-            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBlogService, BlogService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => options.LoginPath = new PathString("/Auth/Login")); // TODO:

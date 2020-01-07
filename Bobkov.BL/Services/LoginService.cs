@@ -17,7 +17,7 @@ namespace Bobkov.BL.Services
 
         public Task<SignInResult> Login(UserDTO user)
         {
-            return signInManager.PasswordSignInAsync(user.UserName, user.Password, user.IsPersistent, false);
+            return signInManager.PasswordSignInAsync(user.UserName, user.Password, user.IsPersistent, true);
         }
 
         public Task Logout() => signInManager.SignOutAsync();

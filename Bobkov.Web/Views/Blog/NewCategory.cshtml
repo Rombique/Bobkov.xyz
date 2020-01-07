@@ -1,0 +1,14 @@
+﻿@model Bobkov.Web.Models.Blog.CategoryVM
+
+<h2>Добавление новой категории</h2>
+<form method="post" asp-controller="Blog" asp-action="NewCategory">
+    <div asp-validation-summary="All"></div>
+    <div>
+        @Html.LabelFor(m => m.Name)
+        @Html.EditorFor(m => m.Name)
+        @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        <input type="submit" value="Добавить" />
+    </div>
+</form>

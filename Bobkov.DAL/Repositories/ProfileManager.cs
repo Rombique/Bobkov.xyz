@@ -15,7 +15,6 @@ namespace Bobkov.DAL.Repositories
         public void Create(UserProfile profile)
         {
             IdentityContext.UserProfiles.Add(profile);
-            IdentityContext.SaveChanges();
         }
 
         public void Dispose()

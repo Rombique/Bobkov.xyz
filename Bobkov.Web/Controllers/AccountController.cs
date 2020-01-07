@@ -58,13 +58,11 @@ namespace Bobkov.Web.Controllers
                 var result =
                     await loginService.Login(new UserDTO() { UserName = model.Username, Password = model.Password, IsPersistent = model.IsPersistent });
                 if (result.Succeeded)
-                {
                     return RedirectToAction("Index", "Home");
-                }
+                else if (result.IsLockedOut)
+                    ModelState.AddModelError("IncorrectLoginError", "Вы заблокированы!");
                 else
-                {
                     ModelState.AddModelError("IncorrectLoginError", "Некорректные логин и(или) пароль");
-                }
             }
 
             return View(model);

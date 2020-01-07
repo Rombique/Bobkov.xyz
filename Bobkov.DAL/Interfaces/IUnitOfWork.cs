@@ -1,4 +1,5 @@
-﻿using Bobkov.DAL.Identity;
+﻿using Bobkov.DAL.Entities;
+using Bobkov.DAL.Identity;
 using System.Threading.Tasks;
 
 namespace Bobkov.DAL.Interfaces
@@ -8,6 +9,10 @@ namespace Bobkov.DAL.Interfaces
         AppUserManager UserManager { get; }
         AppRoleManager RoleManager { get; }
         IProfileManager ProfileManager { get; }
+
+        IBaseRepository<TEntity> Repository<TEntity>()
+            where TEntity : Base;
+
         void Dispose();
         void Commit();
         Task CommitAsync();

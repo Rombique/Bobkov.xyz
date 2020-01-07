@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bobkov.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bobkov.DAL.Contexts
 {
@@ -9,5 +10,8 @@ namespace Bobkov.DAL.Contexts
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

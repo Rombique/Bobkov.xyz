@@ -35,11 +35,11 @@ namespace Bobkov.BL.Services
                 UserProfile userProfile = new UserProfile { Id = user.Id, LastActivity = DateTime.Now };
                 UnitOfWork.ProfileManager.Create(userProfile);
                 await UnitOfWork.IdentityCommitAsync();
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Регистрация успешно завершена!", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                return new OperationDetails(false, "Пользователь с таким e-mail уже существует", "UserService.Create");
             }
         }
 
