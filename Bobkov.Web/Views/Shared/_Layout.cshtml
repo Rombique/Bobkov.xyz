@@ -29,12 +29,18 @@
                         </li>
                         <li class="nav-item social-icons">
                             <a href="https://github.com/Rombique" rel="nofollow" target="_blank" title="Github" style="line-height: 40px;">
-                                <span style="" class="fa fa-github"></span>
+                                <span class="fa fa-github"></span>
                             </a>
                         </li>
                         <li class="nav-item social-icons">
                             <a href="https://vk.com/rombique" rel="nofollow" target="_blank" title="VK" style="line-height: 40px;">
-                                <span style="" class="fa fa-vk"></span>
+                                <span class="fa fa-vk"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item social-icons">
+                            <a href="javascript:void(0);" id="email-link" rel="nofollow" style="line-height: 40px;"
+                               data-container="body" data-toggle="popover" data-placement="bottom" data-content="<a href='mailto:roman@bobkov.xyz'>roman@bobkov.xyz</a>">
+                                <span class="fa fa-envelope"></span>
                             </a>
                         </li>
                     </ul>
@@ -56,6 +62,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("[data-toggle=popover]").popover({html:true});
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
