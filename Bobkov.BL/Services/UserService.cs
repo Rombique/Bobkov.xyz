@@ -32,7 +32,7 @@ namespace Bobkov.BL.Services
 
                 await UnitOfWork.UserManager.AddToRoleAsync(user, userDto.Role ?? "User");
 
-                UserProfile userProfile = new UserProfile { Id = user.Id, LastActivity = DateTime.Now };
+                UserProfile userProfile = new UserProfile { Id = user.Id, LastActivity = DateTime.Now, Name = user.UserName };
                 UnitOfWork.Repository<UserProfile>().AddNew(userProfile);
                 await UnitOfWork.CommitAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена!", "");
@@ -60,6 +60,31 @@ namespace Bobkov.BL.Services
                 Email = user.Email,
                 Id = user.Id
             };
+        }
+
+        public UserProfileDTO GetProfileById(int id)
+        {
+            UserProfile userProfile = UnitOfWork.Repository<UserProfile>().GetById(id, true);
+            if (userProfile == null)
+                return null;
+
+            return new UserProfileDTO()
+            {
+                Avatar = userProfile.Avatar,
+                LastActivity = userProfile.LastActivity,
+                Name = userProfile.Name,
+                Id = userProfile.Id
+            };
+        }
+
+        public async Task<OperationDetails> UpdateProfile(UserProfileDTO profileDTO)
+        {
+            UserProfile userProfile = UnitOfWork.Repository<UserProfile>().GetById(profileDTO.Id, true);
+            userProfile.Name = profileDTO.Name;
+            if (profileDTO.Avatar != null)
+                userProfile.Avatar = profileDTO.Avatar;
+            await UnitOfWork.CommitAsync();
+            return new OperationDetails(true, "Обновление успешно завершена!", "");
         }
     }
 }

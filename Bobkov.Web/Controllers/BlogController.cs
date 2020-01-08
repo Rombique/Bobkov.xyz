@@ -4,10 +4,8 @@ using Bobkov.Web.Models.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Bobkov.Web.Controllers
@@ -56,7 +54,7 @@ namespace Bobkov.Web.Controllers
             {
                 PostDTO post = new PostDTO()
                 {
-                    AuthorId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value), //TODO: отрефакторить этот щит
+                    AuthorId = GetCurrentUserId(), //TODO: отрефакторить этот щит
                     CategoryId = model.SelectedCategoryId,
                     Title = model.Title,
                     Preview = model.Preview,

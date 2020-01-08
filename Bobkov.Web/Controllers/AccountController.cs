@@ -3,6 +3,8 @@ using Bobkov.BL.Interfaces;
 using Bobkov.Web.Models.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Bobkov.Web.Controllers
@@ -56,7 +58,7 @@ namespace Bobkov.Web.Controllers
             if (ModelState.IsValid)
             {
                 var result =
-                    await loginService.Login(new UserDTO() { UserName = model.Username, Password = model.Password, IsPersistent = model.IsPersistent });
+                    await loginService.Login(new UserDTO { UserName = model.Username, Password = model.Password, IsPersistent = model.IsPersistent });
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Home");
                 else if (result.IsLockedOut)
@@ -72,6 +74,66 @@ namespace Bobkov.Web.Controllers
         {
             await loginService.Logout();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Profile(int id)
+        {
+            UserProfileDTO userProfile = userService.GetProfileById(id);
+            ProfileVM profile = new ProfileVM
+            {
+                Avatar = userProfile.Avatar.Length > 0 ? $"data:image/jpeg;base64,{(Convert.ToBase64String(userProfile.Avatar))}" : "none",
+                Name = userProfile.Name,
+                LastActivity = userProfile.LastActivity
+            };
+            return View(profile);
+        }
+
+        [HttpGet]
+        public IActionResult EditProfile()
+        {
+            int currentUserId = GetCurrentUserId();
+            UserProfileDTO userProfile = userService.GetProfileById(currentUserId);
+            EditProfileVM editProfile = new EditProfileVM
+            {
+                Id = userProfile.Id,
+                OldAvatar = userProfile.Avatar != null ? $"data:image/jpeg;base64,{(Convert.ToBase64String(userProfile.Avatar))}" : "none",
+                Name = userProfile.Name,
+            };
+            return View(editProfile);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserProfileDTO profile = new UserProfileDTO
+                {
+                    Name = model.Name,
+                    Id = model.Id
+                };
+                if (model.Avatar != null)
+                {
+                    byte[] imageData = null;
+                    // считываем переданный файл в массив байтов
+                    using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
+                    {
+                        imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
+                    }
+                    // установка массива байтов
+                    profile.Avatar = imageData;
+                }
+                var result = await userService.UpdateProfile(profile);
+                if (result.Succeedeed)
+                {
+                    return RedirectToAction("Profile", new { id = profile.Id });
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                }
+            }
+            return View(model);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Bobkov.DAL.Entities
         [Key]
         [ForeignKey("User")]
         public new int Id { get; set; }
+        public byte[] Avatar { get; set; }
+        public string Name { get; set; }
         public virtual User User { get; set; }
         public DateTime LastActivity { get; set; }
     }

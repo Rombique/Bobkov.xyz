@@ -1,0 +1,23 @@
+﻿@model Bobkov.Web.Models.Account.EditProfileVM
+
+<h2>Редактирование профиля</h2>
+<form method="post" asp-controller="Account" asp-action="EditProfile" enctype="multipart/form-data">
+    <div asp-validation-summary="All"></div>
+    <div>
+        @Html.LabelFor(m => m.Name)
+        @Html.EditorFor(m => m.Name)
+        @Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Avatar)
+        @if (!string.IsNullOrEmpty(Model.OldAvatar))
+        {
+            <img src="@Url.Content(Model.OldAvatar)" alt="Image" />
+        }
+        @Html.TextBoxFor(m => m.Avatar, new { type = "file" })
+    </div>
+    <div>
+        <input type="submit" value="Сохранить" />
+    </div>
+    @Html.HiddenFor(m => m.Id)
+</form>

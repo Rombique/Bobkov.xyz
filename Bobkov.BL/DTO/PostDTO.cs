@@ -11,6 +11,8 @@ namespace Bobkov.BL.DTO
         public DateTime DateCreated { get; set; }
         public DateTime? DateUpdated { get; set; }
         public int CategoryId { get; set; }
+        public string Category { get; set; }
         public int AuthorId { get; set; }
+        public int Author { get; set; }
     }
 }

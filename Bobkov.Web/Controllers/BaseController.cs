@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Security.Claims;
 
 namespace Bobkov.Web.Controllers
 {
@@ -11,5 +13,7 @@ namespace Bobkov.Web.Controllers
         {
             this.logger = logger;
         }
+
+        protected int GetCurrentUserId() => Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
     }
 }
