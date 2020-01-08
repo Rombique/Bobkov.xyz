@@ -47,7 +47,7 @@ namespace Bobkov.DAL.Repositories
             var query = dbSet.Where(predicate);
             if (orderBy != null)
                 query = orderBy(query);
-            includes.Aggregate(query, (cur, prop) => cur.Include(prop));
+            query = includes.Aggregate(query, (cur, prop) => cur.Include(prop));
 
             return asNoTracking ? query.AsNoTracking().ToList() : query.ToList();
         }
@@ -67,11 +67,14 @@ namespace Bobkov.DAL.Repositories
             return predicate == null ? dbSet.Count() : dbSet.Count(predicate);
         }
 
-        public TEntity GetFirst(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool asNoTracking = false) //TODO: check dis
+        public TEntity GetFirst(Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            bool asNoTracking = false, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = dbSet.Where(predicate);
+            var query = predicate != null ? dbSet.Where(predicate) : dbSet.AsQueryable();
             if (orderBy != null)
                 query = orderBy(query);
+            query = includes.Aggregate(query, (cur, prop) => cur.Include(prop));
 
             return asNoTracking ? query.AsNoTracking().FirstOrDefault() : query.FirstOrDefault();
         }

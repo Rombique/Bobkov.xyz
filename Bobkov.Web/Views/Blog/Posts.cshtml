@@ -1,0 +1,21 @@
+﻿@model Bobkov.Web.Models.Blog.AllPostsVM
+@using Bobkov.Web.Helpers;
+<div class="row">
+    @foreach (var post in Model.Posts)
+    {
+        <div class="col-lg-6">
+            <div class="post-item">
+                <a asp-action="PostDetails" asp-route-id="@post.Id">
+                    @Html.Display(post.Title)
+                </a>
+                <p class="item-category">@post.Category</p>
+                <p class="item-author">@post.Author</p>
+                <p class="item-description">@Html.Raw(@post.Preview)</p>
+                <p class="card-text">@post.DateCreated.ToString("yyyy-MM-dd")</p>
+            </div>
+        </div>
+    }
+</div>
+<div class="btn-group">
+    @Html.PageLinks(Model.PageInfo, x => Url.Action("Posts", new { page = x }))
+</div>

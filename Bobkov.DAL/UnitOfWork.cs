@@ -16,11 +16,14 @@ namespace Bobkov.DAL
         public AppUserManager UserManager { get; }
         public AppRoleManager RoleManager { get; }
 
+        public PostsRepository PostsRepository { get; }
+
         public UnitOfWork(MainContext context, AppUserManager userManager, AppRoleManager roleManager)
         {
             mainContext = context;
-            this.RoleManager = roleManager;
-            this.UserManager = userManager;
+            RoleManager = roleManager;
+            UserManager = userManager;
+            PostsRepository = new PostsRepository(context);
         }
 
         public IBaseRepository<TEntity> Repository<TEntity>()

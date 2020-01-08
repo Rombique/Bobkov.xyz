@@ -3,6 +3,7 @@ using Bobkov.BL.Infrastructure;
 using Bobkov.BL.Interfaces;
 using Bobkov.DAL.Entities;
 using Bobkov.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Bobkov.BL.Services
                     UnitOfWork.Commit();
                     return new OperationDetails(true, $"Пост успешно добавлен!", "BlogService.AddNewPost");
                 }
-                catch (Exception ex)
+                catch (DbUpdateException ex)
                 {
                     return new OperationDetails(false, ex.Message, "BlogService.AddNewPost");
                 }
@@ -61,7 +62,7 @@ namespace Bobkov.BL.Services
                     UnitOfWork.Commit();
                     return new OperationDetails(true, $"Категория \"{categoryName}\" успешно добавлена!", "BlogService.CreateNewCategory");
                 }
-                catch(Exception ex)
+                catch(DbUpdateException ex)
                 {
                     return new OperationDetails(false, ex.Message, "BlogService.CreateNewCategory");
                 }
@@ -80,13 +81,15 @@ namespace Bobkov.BL.Services
 
         public PostDTO GetPostById(int id)
         {
-            var post = UnitOfWork.Repository<Post>().GetFirst(p => p.Id == id, null, true);
+            var post = UnitOfWork.Repository<Post>().GetFirst(p => p.Id == id, null, true, i => i.Author, i => i.Category);
             if (post == null)
                 return null;
 
             return new PostDTO() //TODO: либо автомеппер либо напиши собственные мепперы
             {
                 AuthorId = post.AuthorId,
+                Author = post.Author.UserName,
+                Category = post.Category.Name,
                 CategoryId = post.CategoryId,
                 Id = post.Id,
                 Content = post.Content,
@@ -97,12 +100,38 @@ namespace Bobkov.BL.Services
             };
         }
 
+        public IEnumerable<PostDTO> GetPostsByPage(int page, int pageSize = 10)
+        {
+            var posts = UnitOfWork.PostsRepository.GetPaged(page, pageSize, true);
+            if (posts == null)
+                return null;
+
+            return posts.Select(post => new PostDTO
+            {
+                AuthorId = post.AuthorId,
+                Author = post.Author.UserName,
+                CategoryId = post.CategoryId,
+                Category = post.Category.Name,
+                Id = post.Id,
+                Content = post.Content,
+                DateCreated = post.DateCreated,
+                DateUpdated = post.DateUpdated,
+                Preview = post.Preview,
+                Title = post.Title
+            });
+        }
+
         public CategoryDTO GetCategoryById(int id)
         {
             var category = UnitOfWork.Repository<Category>().GetFirst(c => c.Id == id);
             if (category == null)
                 return null;
             return new CategoryDTO() { Id = category.Id, Name = category.Name };
+        }
+
+        public int GetPostsCount()
+        {
+            return UnitOfWork.PostsRepository.GetCount(null, true);
         }
     }
 }

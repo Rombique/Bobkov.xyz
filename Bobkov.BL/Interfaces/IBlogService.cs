@@ -1,7 +1,6 @@
 ﻿using Bobkov.BL.DTO;
 using Bobkov.BL.Infrastructure;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Bobkov.BL.Interfaces
 {
@@ -12,5 +11,7 @@ namespace Bobkov.BL.Interfaces
         IEnumerable<CategoryDTO> GetCategories();
         PostDTO GetPostById(int id);
         CategoryDTO GetCategoryById(int id);
+        IEnumerable<PostDTO> GetPostsByPage(int page, int pageSize = 10);
+        int GetPostsCount();
     }
 }

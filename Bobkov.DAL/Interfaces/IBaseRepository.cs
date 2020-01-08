@@ -10,7 +10,9 @@ namespace Bobkov.DAL.Interfaces
     {
         void AddNew(TEntity entity); 
         TEntity GetById(int id, bool asNoTracking = false);
-        TEntity GetFirst(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, bool asNoTracking = false);
+        TEntity GetFirst(Expression<Func<TEntity, bool>> predicate = null, 
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, 
+            bool asNoTracking = false, params Expression<Func<TEntity, object>>[] includes);
         int GetCount(Expression<Func<TEntity, bool>> predicate = null, bool asNoTracking = false);
         IEnumerable<TEntity> GetAll(bool asNoTracking = false);
         IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate,

@@ -115,12 +115,10 @@ namespace Bobkov.Web.Controllers
                 if (model.Avatar != null)
                 {
                     byte[] imageData = null;
-                    // считываем переданный файл в массив байтов
                     using (var binaryReader = new BinaryReader(model.Avatar.OpenReadStream()))
                     {
                         imageData = binaryReader.ReadBytes((int)model.Avatar.Length);
                     }
-                    // установка массива байтов
                     profile.Avatar = imageData;
                 }
                 var result = await userService.UpdateProfile(profile);

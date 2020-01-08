@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bobkov.Web.Models.Blog
 {
     public class PostDetailsVM
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Preview { get; set; }
         public string Content { get; set; }

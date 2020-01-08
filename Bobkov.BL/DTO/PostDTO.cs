@@ -13,6 +13,6 @@ namespace Bobkov.BL.DTO
         public int CategoryId { get; set; }
         public string Category { get; set; }
         public int AuthorId { get; set; }
-        public int Author { get; set; }
+        public string Author { get; set; }
     }
 }

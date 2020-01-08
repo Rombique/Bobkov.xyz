@@ -1,5 +1,6 @@
 ﻿using Bobkov.BL.DTO;
 using Bobkov.BL.Interfaces;
+using Bobkov.Web.Models;
 using Bobkov.Web.Models.Blog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,15 +85,14 @@ namespace Bobkov.Web.Controllers
             return View(newPost);
         }
 
-        public async Task<ActionResult> PostDetails(int id)
+        [HttpGet]
+        public ActionResult PostDetails(int id)
         {
             PostDTO post = blogService.GetPostById(id);
-            var author = await userService.GetUserById(post.AuthorId);
-            var category = blogService.GetCategoryById(post.CategoryId);
             PostDetailsVM postDetails = new PostDetailsVM()
             {
-                Author = author?.UserName,
-                Category = category?.Name,
+                Author = post.Author,
+                Category = post.Category,
                 Content = post.Content,
                 DateCreated = post.DateCreated,
                 DateUpdated = post.DateUpdated,
@@ -100,6 +100,26 @@ namespace Bobkov.Web.Controllers
                 Title = post.Title
             };
             return View(postDetails);
+        }
+
+        [HttpGet]
+        public IActionResult Posts(int? page)
+        {
+            var pageNumber = page ?? 1;
+            var posts = blogService.GetPostsByPage(pageNumber, 1);
+            var postsCount = blogService.GetPostsCount();
+            PageInfo pageInfo = new PageInfo { PageNumber = pageNumber, PageSize = 1, TotalItems = postsCount };
+            var allPosts = posts.Select(post => new PostDetailsVM
+            {
+                Title = post.Title,
+                Id = post.Id,
+                Author = post.Author,
+                Category = post.Category,
+                DateCreated = post.DateCreated,
+                Preview = post.Preview,
+            });
+
+            return View(new AllPostsVM { Posts = allPosts, PageInfo = pageInfo });
         }
     }
 }
