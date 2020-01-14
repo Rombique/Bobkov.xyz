@@ -43,10 +43,6 @@ namespace Bobkov.BL.Services
             }
         }
 
-        public void Dispose()
-        {
-            UnitOfWork.Dispose();
-        }
 
         public async Task<UserDTO> GetUserById(int id)
         {

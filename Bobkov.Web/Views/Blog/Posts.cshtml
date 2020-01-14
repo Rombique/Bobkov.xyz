@@ -3,19 +3,19 @@
 <div class="row">
     @foreach (var post in Model.Posts)
     {
-        <div class="col-lg-6">
-            <div class="post-item">
-                <a asp-action="PostDetails" asp-route-id="@post.Id">
-                    @Html.Display(post.Title)
-                </a>
-                <p class="item-category">@post.Category</p>
-                <p class="item-author">@post.Author</p>
-                <p class="item-description">@Html.Raw(@post.Preview)</p>
-                <p class="card-text">@post.DateCreated.ToString("yyyy-MM-dd")</p>
+        <div class="col-lg-12 post">
+            <div class="container">
+                <p class="card-text">@post.DateCreated.ToString("dd MMMM yyyy")</p>
+                <h4 class="post-title">
+                    <a asp-action="PostDetails" asp-route-id="@post.Id">
+                        @post.Title
+                    </a>
+                </h4>
+                <p class="post-preview">@post.Preview</p>
             </div>
         </div>
     }
 </div>
-<div class="btn-group">
+<div class="paging-group">
     @Html.PageLinks(Model.PageInfo, x => Url.Action("Posts", new { page = x }))
 </div>

@@ -7,18 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bobkov.Web.Controllers
 {
     public class BlogController : BaseController
     {
         private readonly IBlogService blogService;
-        private readonly IUserService userService;
-        public BlogController(ILogger<BaseController> logger, IBlogService blogService, IUserService userService) : base(logger)
+        public BlogController(ILogger<BaseController> logger, IBlogService blogService) : base(logger)
         {
             this.blogService = blogService;
-            this.userService = userService;
         }
 
         [HttpPost]
@@ -55,7 +52,7 @@ namespace Bobkov.Web.Controllers
             {
                 PostDTO post = new PostDTO()
                 {
-                    AuthorId = GetCurrentUserId(), //TODO: отрефакторить этот щит
+                    AuthorId = GetCurrentUserId(),
                     CategoryId = model.SelectedCategoryId,
                     Title = model.Title,
                     Preview = model.Preview,
@@ -64,7 +61,7 @@ namespace Bobkov.Web.Controllers
                 var result = blogService.AddNewPost(post);
                 if (result.Succeedeed)
                 {
-                    return RedirectToAction("NewCategory");
+                    return RedirectToAction("Posts");
                 }
                 else
                 {
@@ -106,9 +103,9 @@ namespace Bobkov.Web.Controllers
         public IActionResult Posts(int? page)
         {
             var pageNumber = page ?? 1;
-            var posts = blogService.GetPostsByPage(pageNumber, 1);
+            var posts = blogService.GetPostsByPage(pageNumber, 2);
             var postsCount = blogService.GetPostsCount();
-            PageInfo pageInfo = new PageInfo { PageNumber = pageNumber, PageSize = 1, TotalItems = postsCount };
+            PageInfo pageInfo = new PageInfo { PageNumber = pageNumber, PageSize = 2, TotalItems = postsCount };
             var allPosts = posts.Select(post => new PostDetailsVM
             {
                 Title = post.Title,

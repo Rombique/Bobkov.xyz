@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bobkov.DAL.Entities
 {
-    public class Category : Base
+    public class Tag : Base
     {
         [Required]
-        public string Name { get; set; }
+        public string TagName { get; set; }
         [Required]
         public string Slug { get; set; }
-        public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+        public virtual ICollection<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }

@@ -16,14 +16,14 @@ namespace Bobkov.DAL.Repositories
         {
             var includes = dbSet
                     .Include(i => i.Author)
-                    .Include(i => i.Category);
+                    .Include(i => i.Category)
+                    .OrderByDescending(o => o.Id);
             var entities = asNoTracking
                 ? includes.AsNoTracking()
                 : includes;
 
             return entities.Skip((page - 1) * pageSize)
                     .Take(pageSize);
-
         }
     }
 }

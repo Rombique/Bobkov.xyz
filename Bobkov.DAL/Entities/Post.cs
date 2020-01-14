@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bobkov.DAL.Entities
@@ -21,5 +22,6 @@ namespace Bobkov.DAL.Entities
         public int AuthorId { get; set; }
         [Required]
         public User Author { get; set; }
+        public virtual ICollection<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }

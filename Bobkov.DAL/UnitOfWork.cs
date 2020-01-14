@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bobkov.DAL
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly MainContext mainContext;
         private readonly Dictionary<Type, object> repositories = new Dictionary<Type, object>();
@@ -38,36 +38,14 @@ namespace Bobkov.DAL
             return newRepository;
         }
 
-        public void Commit()
+        public int Commit()
         {
-            mainContext.SaveChanges();
+            return mainContext.SaveChanges();
         }
 
-        public Task CommitAsync()
+        public Task<int> CommitAsync()
         {
             return mainContext.SaveChangesAsync();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    mainContext.Dispose();
-                    UserManager.Dispose();
-                    RoleManager.Dispose();
-                }
-            }
-            disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

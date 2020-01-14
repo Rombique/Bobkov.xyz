@@ -1,11 +1,10 @@
 ﻿using Bobkov.BL.DTO;
 using Bobkov.BL.Infrastructure;
-using System;
 using System.Threading.Tasks;
 
 namespace Bobkov.BL.Interfaces
 {
-    public interface IUserService : IDisposable
+    public interface IUserService
     {
         Task<OperationDetails> Create(UserDTO userDTO);
         Task<UserDTO> GetUserById(int id);

@@ -15,8 +15,7 @@ namespace Bobkov.DAL.Interfaces
         IBaseRepository<TEntity> Repository<TEntity>()
             where TEntity : Base;
 
-        void Dispose();
-        void Commit();
-        Task CommitAsync();
+        int Commit();
+        Task<int> CommitAsync();
     }
 }

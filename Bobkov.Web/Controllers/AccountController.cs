@@ -30,7 +30,7 @@ namespace Bobkov.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserDTO user = new UserDTO { Email = model.Email, UserName = model.Username, Password = model.Password };
+                UserDTO user = new UserDTO(model.Username, model.Email, model.Password);
                 var result = await userService.Create(user);
                 if (result.Succeedeed)
                 {
@@ -40,6 +40,7 @@ namespace Bobkov.Web.Controllers
                 else
                 {
                     ModelState.AddModelError(string.Empty, result.Message);
+                    logger.LogError(result.Message);
                 }
             }
             return View(model);
@@ -58,7 +59,7 @@ namespace Bobkov.Web.Controllers
             if (ModelState.IsValid)
             {
                 var result =
-                    await loginService.Login(new UserDTO { UserName = model.Username, Password = model.Password, IsPersistent = model.IsPersistent });
+                    await loginService.Login(new UserDTO(model.Username, model.Password, model.IsPersistent));
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Home");
                 else if (result.IsLockedOut)
@@ -102,6 +103,7 @@ namespace Bobkov.Web.Controllers
             };
             return View(editProfile);
         }
+
         [HttpPost]
         public async Task<IActionResult> EditProfile(EditProfileVM model)
         {
